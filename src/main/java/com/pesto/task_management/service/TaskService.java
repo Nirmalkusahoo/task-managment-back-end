@@ -3,6 +3,7 @@ package com.pesto.task_management.service;
 
 import com.pesto.task_management.dto.TaskDto;
 import com.pesto.task_management.repository.TaskRepository;
+import com.pesto.task_management.rto.ResponseMessage;
 import com.pesto.task_management.rto.TaskRto;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -14,19 +15,30 @@ import javax.validation.Valid;
 import java.util.List;
 import java.util.stream.Collectors;
 
+/**
+ * TaskService is a service class that handles task related operations.
+ * It uses TaskRepository to perform the actual operations.
+ * It includes methods for adding, updating, retrieving and deleting tasks.
+ */
 @Service
 public class TaskService {
     @Autowired
     TaskRepository taskRepository;
 
-
-    public ResponseEntity<String> addTask(@Valid TaskRto taskRto) {
+    /**
+     * This method handles task creation requests.
+     * It receives a TaskRto object which contains task details.
+     * It uses TaskRepository to perform the task creation operation.
+     * @param taskRto - Object containing task details.
+     * @return ResponseEntity with ResponseMessage and HTTP status.
+     */
+    public ResponseEntity<ResponseMessage> addTask(@Valid TaskRto taskRto) {
         try {
             TaskDto taskDto = mapTaskRtoToDto(taskRto);
             taskRepository.save(taskDto);
-            return new ResponseEntity<>("Task added successfully", HttpStatus.CREATED);
+            return new ResponseEntity<>(new ResponseMessage("Task added successfully"), HttpStatus.CREATED);
         } catch (ConstraintViolationException e) {
-            return new ResponseEntity<>("Validation failed: " + "Task should have status", HttpStatus.BAD_REQUEST);
+            return new ResponseEntity<>(new ResponseMessage("Validation failed: " + "Task should have status"), HttpStatus.BAD_REQUEST);
         }
 
     }

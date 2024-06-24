@@ -5,6 +5,12 @@ import javax.persistence.*;
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
 
+/**
+ * TaskDto is a Data Transfer Object (DTO) class that represents a task.
+ * It is annotated with JPA annotations to map it to a database table.
+ * It includes fields for task id, name, description, and status.
+ * It also includes getter and setter methods for these fields.
+ */
 @Entity
 @Table()
 public class TaskDto {
